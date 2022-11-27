@@ -63,6 +63,7 @@ class Register extends Component {
     this.setState({ account: accounts[0] })
     const networkId = await web3.eth.net.getId()
     const LandData = Land.networks[networkId]
+    console.log('web3', LandData)
     if (LandData) {
       const landList = new web3.eth.Contract(Land.abi, LandData.address)
       this.setState({ landList })
@@ -73,10 +74,10 @@ class Register extends Component {
       this.props.history.push('/dashboard')
   }
   validateEmail = (emailField) => {
-    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
-    if (reg.test(emailField) == false) {
-      return false
-    }
+    // var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
+    // if (reg.test(emailField) == false) {
+    //   return false
+    // }
     return true
   }
   handleChange = (name) => (event) => {
@@ -115,6 +116,7 @@ class Register extends Component {
       city: this.state.city,
       postalCode: this.state.postalCode,
     }
+    this.login(data)
     if (
       this.state.name &&
       this.state.email &&
@@ -123,40 +125,40 @@ class Register extends Component {
       this.state.city &&
       this.state.postalCode
     ) {
-      if (this.validateEmail(this.state.email)) {
-        axios.post('http://localhost:3001/signup', data).then(
-          (response) => {
-            if (response.status == 200) {
-              this.setState({
-                name: '',
-                email: '',
-                address: '',
-                postalCode: '',
-                city: '',
-                contact: '',
-              })
-            }
+      // if (this.validateEmail(this.state.email)) {
+      //   axios.post('http://localhost:3001/signup', data).then(
+      //     (response) => {
+      //       if (response.status == 200) {
+      //         this.setState({
+      //           name: '',
+      //           email: '',
+      //           address: '',
+      //           postalCode: '',
+      //           city: '',
+      //           contact: '',
+      //         })
+      //       }
 
-            try {
-              this.login(data)
-            } catch (error) {
-              console.log('error:', error)
-            }
-          },
-          (error) => {
-            this.setState({ loading: false })
-            alert('User already exist. Try with another email address')
-            this.setState({
-              name: '',
-              email: '',
-              address: '',
-              postalCode: '',
-              city: '',
-              contact: '',
-            })
-          },
-        )
-      } else alert('Please, Enter correct Email address')
+      //       try {
+      //         this.login(data)
+      //       } catch (error) {
+      //         console.log('error:', error)
+      //       }
+      //     },
+      //     (error) => {
+      //       this.setState({ loading: false })
+      //       alert('User already exist. Try with another email address')
+      //       this.setState({
+      //         name: '',
+      //         email: '',
+      //         address: '',
+      //         postalCode: '',
+      //         city: '',
+      //         contact: '',
+      //       })
+      //     },
+      //   )
+      // } else alert('Please, Enter correct Email address')
     } else {
       alert('All fields are required')
     }

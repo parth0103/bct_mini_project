@@ -164,8 +164,8 @@ class table extends Component {
     const { classes, assetList } = this.props
     return (
       <Paper className={classes.root}>
-        {/* {console.log(assetList)} */}
-        {console.log(this.state)}
+        {console.log("dddddd",assetList)}
+        {console.log("",this.state)}
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>

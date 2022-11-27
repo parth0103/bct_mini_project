@@ -7,6 +7,7 @@ import Table from '../Containers/Govt_Table'
 import { withStyles } from '@material-ui/core/styles'
 import Web3 from 'web3'
 import jwtDecode from 'jwt-decode'
+import axios from "axios";
 
 const styles = (theme) => ({
   container: {
@@ -59,41 +60,43 @@ class Dashboard extends Component {
     let details = await this.state.landList.methods
       .landInfoOwner(property)
       .call()
-    ipfs.cat(details[1], (err, res) => {
-      if (err) {
-        console.error(err)
-        return
-      }
-      console.log(details)
-      const temp = JSON.parse(res.toString())
-      this.state.assetList.push({
-        property: property,
-        uniqueID: details[1],
-        name: temp.name,
-        key: details[0],
-        email: temp.email,
-        contact: temp.contact,
-        pan: temp.pan,
-        occupation: temp.occupation,
-        oaddress: temp.address,
-        ostate: temp.state,
-        ocity: temp.city,
-        opostalCode: temp.postalCode,
-        laddress: temp.laddress,
-        lstate: temp.lstate,
-        lcity: temp.lcity,
-        lpostalCode: temp.lpostalCode,
-        larea: temp.larea,
-        lamount: details[2],
-        isGovtApproved: details[3],
-        isAvailable: details[4],
-        requester: details[5],
-        requestStatus: details[6],
-        document: temp.document,
-        images: temp.images,
-      })
-      this.setState({ assetList: [...this.state.assetList] })
-    })
+      await axios
+      .get(`https://nftstorage.link/ipfs/${details[1]}`)
+      .then((response) => {
+        // console.log(response);
+        if (response.status == 200) {
+          const temp = response.data.data;
+          // console.log("first",temp);
+          this.state.assetList.push({
+            property: property,
+            uniqueID: details[1],
+            name: temp.name,
+            key: details[0],
+            email: temp.email,
+            contact: temp.contact,
+            pan: temp.pan,
+            occupation: temp.occupation,
+            oaddress: temp.laddress,
+            ostate: temp.lstate,
+            ocity: temp.lcity,
+            opostalCode: temp.lpostalCode,
+            laddress: temp.laddress,
+            lstate: temp.lstate,
+            lcity: temp.lcity,
+            lpostalCode: temp.lpostalCode,
+            larea: temp.larea,
+            lamount: details[2],
+            isGovtApproved: details[3],
+            isAvailable: details[4],
+            requester: details[5],
+            requestStatus: details[6],
+            document: response.data.doc,
+            images: response.data.image,
+          });
+          this.setState({ assetList: [...this.state.assetList] });
+        }
+      });
+
   }
 
   async getDetails() {

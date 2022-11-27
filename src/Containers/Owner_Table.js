@@ -196,7 +196,7 @@ class table extends Component {
     const { classes, assetList } = this.props
     return (
       <Paper className={classes.root}>
-        {console.log(assetList)}
+        {console.log("list",assetList)}
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -218,6 +218,8 @@ class table extends Component {
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                     {columns.map((column) => {
                       const value = row[column.id]
+                      let linkDoc =row['document'].replace("ipfs://",'https://nftstorage.link/ipfs/');
+                      let linkImg =row['images'].replace("ipfs://",'https://nftstorage.link/ipfs/');
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.id == 'isAvailable' &&
@@ -282,7 +284,7 @@ class table extends Component {
                               '0x0000000000000000000000000000000000000000' ? (
                             <span>No Requestor</span>
                           ) : column.id == 'document' ? (
-                            <a href={row['document']} download>
+                            <a href={linkDoc} download>
                               Download Document
                             </a>
                           ) : column.id == 'images' ? (
@@ -352,16 +354,17 @@ class table extends Component {
                             </DialogTitle>
                             <DialogContent>
                               <DialogContentText id="alert-dialog-slide-description">
-                                {this.state.images.map((image) => (
+                                {/* {this.state.images.map((image) => ( */}
+                                {/* {console.log("dddDD",this.state.images)} */}
                                   <img
-                                    src={image}
+                                    src={linkImg}
                                     style={{
                                       height: '300px',
                                       width: '400px',
                                       margin: '10px',
                                     }}
                                   />
-                                ))}
+                                {/* ))} */}
                               </DialogContentText>
                             </DialogContent>
                             <DialogActions>

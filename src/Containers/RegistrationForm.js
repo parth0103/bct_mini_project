@@ -1,128 +1,138 @@
-import React, { Component } from 'react'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import { Container } from '@material-ui/core'
-import SendIcon from '@material-ui/icons/Send'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import Land from '../abis/LandRegistry.json'
-import ipfs from '../ipfs'
-import axios from 'axios'
+import React, { Component } from "react";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import { Container } from "@material-ui/core";
+import SendIcon from "@material-ui/icons/Send";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Land from "../abis/LandRegistry.json";
+import ipfs from "../ipfs";
+import axios from "axios";
+import { NFTStorage } from "nft.storage";
 
 class Register extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      name: '',
-      email: '',
-      pan: '',
-      occupation: '',
-      state: '',
-      address: '',
-      postalCode: '',
-      city: '',
-      contact: '',
-      laddress: '',
-      lstate: '',
-      lcity: '',
-      lamount: '',
-      larea: '',
-      lpostalCode: '',
-      ipfsHash: '',
+      name: "",
+      email: "",
+      pan: "",
+      occupation: "",
+      state: "",
+      address: "",
+      postalCode: "",
+      city: "",
+      contact: "",
+      laddress: "",
+      lstate: "",
+      lcity: "",
+      lamount: "",
+      larea: "",
+      lpostalCode: "",
+      ipfsHash: "",
       checked: false,
       buffer: null,
       images: [],
       image: [],
-    }
+      hash: ""
+    };
   }
 
   componentDidMount = async () => {
-    const web3 = window.web3
-    const acc = await window.localStorage.getItem('web3account')
-    this.setState({ account: acc })
+    const web3 = window.web3;
+    const acc = await window.localStorage.getItem("web3account");
+    this.setState({ account: acc });
     // console.log(acc)
-    const networkId = await web3.eth.net.getId()
-    const LandData = Land.networks[networkId]
+    const networkId = await web3.eth.net.getId();
+    const LandData = Land.networks[networkId];
     if (LandData) {
-      const landList = new web3.eth.Contract(Land.abi, LandData.address)
-      this.setState({ landList })
+      const landList = new web3.eth.Contract(Land.abi, LandData.address);
+      this.setState({ landList });
     } else {
-      window.alert('Token contract not deployed to detected network.')
+      window.alert("Token contract not deployed to detected network.");
     }
     if (
-      !window.localStorage.getItem('authenticated') ||
-      window.localStorage.getItem('authenticated') === 'false'
+      !window.localStorage.getItem("authenticated") ||
+      window.localStorage.getItem("authenticated") === "false"
     )
-      this.props.history.push('/login')
-  }
+      this.props.history.push("/login");
+  };
   validateEmail = (emailField) => {
-    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     if (reg.test(emailField) == false) {
-      return false
+      return false;
     }
-    return true
-  }
+    return true;
+  };
   handleChange = (name) => (event) => {
-    this.setState({ [name]: event.target.value })
-  }
+    this.setState({ [name]: event.target.value });
+  };
   handleChangeCheckbox = (event) => {
-    this.setState({ checked: !this.state.checked })
-  }
+    this.setState({ checked: !this.state.checked });
+  };
 
   async propertyID(laddress, lamount) {
     const propertyId = await this.state.landList.methods
       .computeId(laddress, lamount)
-      .call()
-    this.setState({ propertyId })
-    console.log(propertyId)
+      .call();
+    this.setState({ propertyId });
+    console.log(propertyId);
   }
 
   async Register(data, account, laddress, lamount) {
-    var buf = Buffer.from(JSON.stringify(data))
-    ipfs.files.add(buf, (error, result) => {
-      console.log('Ipfs result', result)
-      if (error) {
-        console.error(error)
-        return
-      }
-      this.state.landList.methods
+    // var buf = Buffer.from(JSON.stringify(data));
+    await this.propertyID(laddress, lamount)
+    
+    console.log(this.state.hash,"  ",this.state.propertyId,"  ", account," " , laddress,"  ", lamount)
+    await this.state.landList.methods
         .Registration(
           account,
-          result[0].hash,
+          this.state.hash,
           laddress,
           lamount,
           this.state.propertyId,
-          'Not Approved',
-          'Not yet approved by the govt.',
+          "Not Approved",
+          "Not yet approved by the govt."
         )
         .send({
           from: this.state.account,
           gas: 1000000,
         })
-        .on('receipt', function (receipt) {
-          console.log(receipt)
+        .on("receipt", function (receipt) {
+          console.log(receipt);
           if (!receipt) {
-            console.log('Transaction Failed!!!')
+            console.log("Transaction Failed!!!");
           } else {
-            console.log('Transaction succesful')
-            window.alert('Transaction succesful')
-            console.log(data)
-            window.location = '/dashboard'
+            console.log("Transaction succesful");
+            window.alert("Transaction succesful");
+            console.log(data);
+            window.location = "/dashboard";
           }
-        })
-      this.setState({ ipfsHash: result[0].hash })
-    })
+        });
+      this.setState({ ipfsHash: this.state.hash });
+  
 
     // console.log(transaction)
   }
-  handleSubmit = () => {
-    const account = this.state.account
-    const laddress = this.state.laddress
-    const lamount = this.state.lamount
+
+  async getExampleImage(imageOriginUrl) {
+    // const imageOriginUrl = this.state.image;
+    const r = await fetch(imageOriginUrl);
+    if (!r.ok) {
+      throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
+    }
+    return r.blob();
+  }
+
+  async storeExampleNFT() {
+    const image = await this.getExampleImage(this.state.image);
+    const doc = await this.getExampleImage(this.state.buffer);
+    const account = this.state.account;
+    const laddress = this.state.laddress;
+    const lamount = this.state.lamount;
 
     let data = {
       name: this.state.name,
-
       email: this.state.email,
       contact: this.state.contact,
       pan: this.state.pan,
@@ -136,48 +146,93 @@ class Register extends Component {
       lcity: this.state.lcity,
       lpostalCode: this.state.lpostalCode,
       larea: this.state.larea,
-      document: this.state.buffer,
-      images: this.state.image,
-    }
-    // console.log(data)
+      // document: this.state.buffer,
+      // images: this.state.image,
+    };
+    const nft = {
+      name: data.name,
+      data,
+      image,
+      doc,
+      description: "The metaverse is here. Where is it all being stored?",
+    };
+
+    const client = new NFTStorage({
+      token:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDZCMGNDRjZkNmIzNTM4NDcxYjA4NWJGYjI1M0IwMWZFRDJhRGEwNTAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2OTQ0NzYzODE3OSwibmFtZSI6IkxhbmQifQ.hByobSDH8H2SJwqiuiNRl6iBS-qlP_0nZkcBeR-wOro",
+    });
+    const metadata = await client.store(nft);
+    let link=metadata.url;
+    this.setState({ hash: link.replace("ipfs://",'') });
+    console.log("NFT data stored!");
+    console.log("Metadata URI: ", this.state.hash);
+
+    this.Register(data, account, laddress, lamount)
+  }
+
+  handleSubmit = () => {
+    const account = this.state.account;
+    const laddress = this.state.laddress;
+    const lamount = this.state.lamount;
+
+    let data = {
+      name: this.state.name,
+      email: this.state.email,
+      contact: this.state.contact,
+      pan: this.state.pan,
+      address: this.state.address,
+      state: this.state.state,
+      city: this.state.city,
+      postalCode: this.state.postalCode,
+      occupation: this.state.occupation,
+      laddress: this.state.laddress,
+      lstate: this.state.lstate,
+      lcity: this.state.lcity,
+      lpostalCode: this.state.lpostalCode,
+      larea: this.state.larea,
+      // document: this.state.buffer,
+      // images: this.state.image,
+    };
+    console.log(data.name)
     if (data) {
       try {
-        this.propertyID(laddress, lamount)
-        this.Register(data, account, laddress, lamount)
+        this.storeExampleNFT();
+        // this.Register(data, account, laddress, lamount)
+        
       } catch (error) {
-        console.log('error:', error)
+        console.log("error:", error);
       }
     } else {
-      window.alert('All fields are required.')
+      window.alert("All fields are required.");
     }
-  }
+  };
   onChange = (e) => {
     // Assuming only image
-    const file = e.target.files[0]
-    var reader = new FileReader()
-    var url = reader.readAsDataURL(file)
+    const file = e.target.files[0];
+    var reader = new FileReader();
+    var url = reader.readAsDataURL(file);
     reader.onloadend = () => {
-      this.setState({ buffer: reader.result })
-    }
-  }
+      this.setState({ buffer: reader.result });
+    };
+  };
   fileSelectedHandler = async (e) => {
-    await this.setState({ images: [...e.target.files] })
+    await this.setState({ images: [...e.target.files] });
     for (let i = 0; i < this.state.images.length; i++) {
-      const file = this.state.images[i]
-      var reader = new FileReader()
-      reader.readAsDataURL(file)
-      console.log(file)
+      const file = this.state.images[i];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      console.log(file);
       reader.onload = (e) => {
-        this.setState({ image: [...this.state.image, e.target.result] })
-      }
+        this.setState({ image: [...this.state.image, e.target.result] });
+      };
     }
-  }
+  };
 
   render() {
     return (
-      <Container style={{ marginTop: '30px' }}>
+      <Container style={{ marginTop: "30px" }}>
         {console.log(this.state.image)}
-        <h1 style={{ textAlign: 'center', fontWeight: '600' }}>
+        <h1 style={{ textAlign: "center", fontWeight: "600" }}>
           Owner's Details
         </h1>
         <div className="input">
@@ -192,7 +247,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('name')}
+            onChange={this.handleChange("name")}
           />
           <TextField
             id="standard-full-width"
@@ -217,7 +272,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('email')}
+            onChange={this.handleChange("email")}
           />
           <TextField
             id="standard-full-width"
@@ -230,7 +285,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('contact')}
+            onChange={this.handleChange("contact")}
           />
           <TextField
             id="standard-full-width"
@@ -243,7 +298,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('pan')}
+            onChange={this.handleChange("pan")}
           />
           <TextField
             id="standard-full-width"
@@ -256,7 +311,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('occupation')}
+            onChange={this.handleChange("occupation")}
           />
           <TextField
             id="standard-full-width"
@@ -269,7 +324,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('address')}
+            onChange={this.handleChange("address")}
           />
           <TextField
             id="standard-full-width"
@@ -282,7 +337,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('state')}
+            onChange={this.handleChange("state")}
           />
           <TextField
             id="standard-full-width"
@@ -295,7 +350,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('city')}
+            onChange={this.handleChange("city")}
           />
           <TextField
             id="standard-full-width"
@@ -308,11 +363,11 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('postalCode')}
+            onChange={this.handleChange("postalCode")}
           />
         </div>
         <h1
-          style={{ textAlign: 'center', fontWeight: '600', marginTop: '30px' }}
+          style={{ textAlign: "center", fontWeight: "600", marginTop: "30px" }}
         >
           Land Details
         </h1>
@@ -328,7 +383,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('laddress')}
+            onChange={this.handleChange("laddress")}
           />
           <TextField
             id="standard-full-width"
@@ -341,7 +396,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('lstate')}
+            onChange={this.handleChange("lstate")}
           />
           <TextField
             id="standard-full-width"
@@ -354,7 +409,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('lcity')}
+            onChange={this.handleChange("lcity")}
           />
           <TextField
             id="standard-full-width"
@@ -367,7 +422,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('lpostalCode')}
+            onChange={this.handleChange("lpostalCode")}
           />
           <TextField
             id="standard-full-width"
@@ -380,7 +435,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('larea')}
+            onChange={this.handleChange("larea")}
           />
           <TextField
             id="standard-full-width"
@@ -393,7 +448,7 @@ class Register extends Component {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={this.handleChange('lamount')}
+            onChange={this.handleChange("lamount")}
           />
           <label for="file">Upload Legal Documents</label>
           <br />
@@ -423,12 +478,12 @@ class Register extends Component {
             [...this.state.images].map((file) => (
               <img
                 src={URL.createObjectURL(file)}
-                style={{ height: '100px', width: '200px', margin: '10px' }}
+                style={{ height: "100px", width: "200px", margin: "10px" }}
               />
             ))}
         </div>
         <FormControlLabel
-          style={{ marginTop: '20px', float: 'center' }}
+          style={{ marginTop: "20px", float: "center" }}
           control={
             <Checkbox
               checked={this.state.checked}
@@ -439,7 +494,7 @@ class Register extends Component {
           }
           label="I agree to the Terms and Conditions"
         />
-        <div style={{ marginTop: '20px', textAlign: 'center' }}>
+        <div style={{ marginTop: "20px", textAlign: "center" }}>
           {this.state.checked ? (
             <Button
               variant="contained"
@@ -460,11 +515,11 @@ class Register extends Component {
             </Button>
           )}
         </div>
-        <div style={{ marginTop: '20px', textAlign: 'center' }}>
-          Already Registered?{'   '} <a href="/dashboard">Check Status</a>
+        <div style={{ marginTop: "20px", textAlign: "center" }}>
+          Already Registered?{"   "} <a href="/dashboard">Check Status</a>
         </div>
       </Container>
-    )
+    );
   }
 }
-export default Register
+export default Register;

@@ -1,8 +1,8 @@
 module.exports = {
-  email: "EMAIL",
-  password: "PASSWORD",
-  NEXMO_API_KEY: "API_KEY",
-  NEXMO_API_SECRET: "SECRET_KEY",
-  NEXMO_FROM_NUMBER: "NUMBER",
-  MongoURI: `ENTER_MONGOURI`
+  email: "achwaleprajwal@gmail.com",
+  password: "tDbiETnDaxQKJw8",
+  NEXMO_API_KEY: "d8f2b7a5",
+  NEXMO_API_SECRET: "H2ASwdC1M9WpGUDO",
+  NEXMO_FROM_NUMBER: "9021171570",
+  MongoURI: `mongodb+srv://rahul:rahul@cluster0.l6z1p6z.mongodb.net/landRegister?retryWrites=true&w=majority`
 }

@@ -173,6 +173,9 @@ class table extends Component {
                   <TableRow hover role="checkbox" key={row.code}>
                     {columns.map((column) => {
                       const value = row[column.id]
+                      let linkDoc =row['document'].replace("ipfs://",'https://nftstorage.link/ipfs/');
+                      let linkImg =row['images'].replace("ipfs://",'https://nftstorage.link/ipfs/');
+                     
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.id == 'isGovtApproved' &&
@@ -214,7 +217,7 @@ class table extends Component {
                               </Grid>
                             </Grid>
                           ) : column.id == 'document' ? (
-                            <a href={row['document']} download>
+                            <a href={linkDoc} download>
                               Download Document
                             </a>
                           ) : column.id == 'images' ? (
@@ -246,16 +249,14 @@ class table extends Component {
                             </DialogTitle>
                             <DialogContent>
                               <DialogContentText id="alert-dialog-slide-description">
-                                {this.state.images.map((image) => (
                                   <img
-                                    src={image}
+                                    src={linkImg}
                                     style={{
                                       height: '300px',
                                       width: '400px',
                                       margin: '10px',
                                     }}
                                   />
-                                ))}
                               </DialogContentText>
                             </DialogContent>
                             <DialogActions>
