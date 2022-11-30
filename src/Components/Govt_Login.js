@@ -16,19 +16,19 @@ const styles = () => ({
     left: '50%',
     transform: 'translate(-50%,-50%)',
     '& .MuiFormLabel-root': {
-      color: '#fff',
+      color: 'black',
     },
     '&  .MuiInputBase-root': {
-      color: '#fff',
+      color: 'black',
     },
     '&  .MuiInput-underline:before': {
-      borderBottomColor: '#fff',
+      borderBottomColor: 'black',
     },
     '&  .MuiInput-underline:after': {
-      borderBottomColor: '#fff',
+      borderBottomColor: 'black',
     },
     '&  .MuiInput-underline:hover': {
-      borderBottomColor: '#fff',
+      borderBottomColor: 'black',
     },
     '& .MuiButton-containedPrimary': {
       backgroundColor: '#328888',

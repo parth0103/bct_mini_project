@@ -3,13 +3,14 @@ import React, { Component } from "react";
 import Typewriter from "react-typewriter-effect";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import picImage from '../images/farmhouse.png'
 
 export default class Home extends Component {
   render() {
     return (
       <div className="bg">
         <div className="home-text">
-          Land Registry
+          Blockchain Based <br/>Land Registry
           <br /> Application
           <div className="typewriter">
             {/* Trustable, Transparent and Digitized Platform
@@ -18,14 +19,15 @@ export default class Home extends Component {
             <Typewriter
               cursorColor="#fff"
               multiText={[
-                "Trustable, Transparent and Digitized Platform",
-                "Open for all! Register Now.",
+                "Safe, Trustable and Digitized Platform",
+                "Register Now.",
               ]}
             />
           </div>
+          
           <hr
             style={{
-              border: "8px solid #fff",
+              border: "8px solid black",
               width: "150px",
               marginLeft: "0px",
             }}
@@ -42,6 +44,7 @@ export default class Home extends Component {
             Login
           </button>
         </div>
+        <img className="homeImg" src={picImage} />
       </div>
     );
   }

@@ -19,17 +19,24 @@ ul {
 	margin-bottom: 0px;
 }
 
+.homeImg{
+	position: relative;
+	left: 680px;
+	bottom: 550px;
+}
+
 .bg {
-	background: url('./images/bg.jpg');
-	background-repeat: no-repeat;
+	/* background: url('./images/background.jpeg'); */
+	/* background-repeat: no-repeat;
 	background-size: cover;
-	height: 100vh;
+	height: 100vh; */
+	background-color: rgb(223, 255, 244);
 }
 .home-text {
-	color: #fff;
-	font-size: 90px;
+	color: black;
+	font-size: 70px;
 	font-weight: 600;
-	padding-top: 350px;
+	padding-top: 200px;
 	padding-left: 80px;
 	text-transform: uppercase;
 	line-height: 95px;
@@ -40,15 +47,17 @@ ul {
 	line-height: 60px;
 	font-weight: 400;
 	font-family: 'Roboto Condensed', sans-serif;
-	color: #fff;
+	color: black;
 	text-transform: none;
 }
 .home-button {
-	padding-top: 20px;
+	padding-top: 30px;
 	padding-left: 80px;
+	padding-bottom: 50px;
 }
 .home-button button {
 	background-color: #328888;
+	color: white;
 	border-radius: 5px;
 	padding: 10px;
 	width: 150px;
@@ -67,7 +76,7 @@ ul {
 }
 
 .login-text {
-	color: #fff;
+	color: black;
 	opacity: 0.8;
 	font-size: 50px;
 	margin-top: -100px;
@@ -76,6 +85,28 @@ ul {
 	font-weight: 600;
 	/* font-family: 'Pacifico', cursive; */
 }
+
+.input{
+	color: #000;
+	justify-content: center;
+	margin: 0px auto;
+	text-align: center;
+}
+
+.register-text{
+	color: #000;
+}
+
+.input::placeholder{
+	color: #000;
+}
+
+.privateText{
+	width: 80%;
+	text-align: center;
+	
+}
+
 .faq-text {
 	color: #fff;
 	opacity: 0.8;
@@ -101,7 +132,7 @@ ul {
 	/* border-radius: 50%; */
 }
 .profile-text {
-	color: rgb(255, 255, 255);
+	color: black;
 	margin-top: 15px;
 	margin-left: 80px;
 	font-family: 'Roboto Condensed', sans-serif;
@@ -115,7 +146,7 @@ ul {
 	font-weight: 400;
 }
 .dashboard-bg {
-	background-color: rgb(37, 37, 37);
+	background-color: rgb(223, 255, 244);
 	/* min-height: 100vh; */
 	/* position: fixed;
 	top: 0;
@@ -130,7 +161,7 @@ ul {
 	margin-top: 100px;
 }
 .profile-bg {
-	background-color: rgb(37, 37, 37);
+	background-color: rgb(223, 255, 244);
 	/* min-height: 100vh; */
 	position: fixed;
 	top: 0;
@@ -192,6 +223,7 @@ ul#nav li {
 	list-style: none;
 	height: 48px;
 	display: inline-block;
+	
 }
 
 /* Links */
@@ -203,7 +235,7 @@ ul#nav li a {
 	line-height: 32px;
 	text-decoration: none;
 	text-align: left;
-	color: #fff;
+	color: black;
 	cursor: pointer;
 	-webkit-transition: color 0.2s ease-in-out;
 	-moz-transition: color 0.2s ease-in-out;

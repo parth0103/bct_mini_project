@@ -20,22 +20,22 @@ const styles = () => ({
     left: '50%',
     transform: 'translate(-50%,-50%)',
     '& .MuiFormLabel-root': {
-      color: '#fff',
+      color: 'black',
     },
     '&  .MuiInputBase-root': {
-      color: '#fff',
+      color: 'black',
     },
     '&  .MuiInput-underline:before': {
-      borderBottomColor: '#fff',
+      borderBottomColor: 'black',
     },
     '&  .MuiInput-underline:after': {
-      borderBottomColor: '#fff',
+      borderBottomColor: 'black',
     },
     '&  .MuiInput-underline:hover': {
       borderBottomColor: '#fff',
     },
     '& .MuiButton-containedPrimary': {
-      backgroundColor: '#328888',
+      backgroundColor: 'black',
       fontFamily: "'Roboto Condensed', sans-serif",
     },
   },
@@ -167,8 +167,8 @@ class Register extends Component {
     const { classes } = this.props
     return (
       <div className="profile-bg">
-        <Container style={{ marginTop: '40px' }} className={classes.root}>
-          <div className="register-text">Register Here</div>
+        <Container style={{ marginTop: '40px'  }} className={classes.root}>
+          <div style={{ marginTop: '40px', textAlign: 'center', color: 'black' ,fontSize:'40px' }}>Register Here</div>
           <div className="input">
             <TextField
               id="standard-full-width"
@@ -260,7 +260,7 @@ class Register extends Component {
             </Button>
           </div>
           <div
-            style={{ marginTop: '20px', textAlign: 'center', color: '#fff' }}
+            style={{ marginTop: '20px', textAlign: 'center', color: 'black' }}
           >
             Already have an account?{'   '}{' '}
             <a href="/login" style={{ color: '#328888' }}>

@@ -229,7 +229,7 @@ class Header extends Component {
                     </li>
                   </div>
                 )}
-                <li>
+                {/* <li>
                   <a
                     className="smoothscroll"
                     onClick={() => {
@@ -238,7 +238,7 @@ class Header extends Component {
                   >
                     FAQ
                   </a>
-                </li>
+                </li> */}
               </ul>
             </nav>
           </header>

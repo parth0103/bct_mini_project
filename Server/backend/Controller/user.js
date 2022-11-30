@@ -39,8 +39,8 @@ router.post('/register_govt', async (req, res) => {
   // Insert details straight into MongoDB
     try {
       
-      const username="Delhi Government";
-      const password="Delhi";
+      const username="land";
+      const password="land";
       const address="14, Darya Ganj , New Delhi";
       const contact="01123392027"
       const city="Delhi"

@@ -112,7 +112,8 @@ class Login extends Component {
         <Container style={{ marginTop: '40px' }} className={classes.root}>
           <div className="login-text">User Login</div>
           <div className="input">
-            <TextField
+            <input
+              className='privateText'
               id="standard-full-width"
               type="address"
               label="Private Key"
@@ -140,7 +141,7 @@ class Login extends Component {
             </div>
           </div>
           <div
-            style={{ marginTop: '20px', textAlign: 'center', color: '#fff' }}
+            style={{ marginTop: '20px', textAlign: 'center', color: 'black' }}
           >
             Don't have an account?{'   '}{' '}
             <a href="/signup" style={{ color: '#328888' }}>
