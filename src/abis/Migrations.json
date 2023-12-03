@@ -59,7 +59,7 @@
   "sourceMap": "69:360:1:-;;;171:58;8:9:-1;5:2;;;30:1;27;20:12;5:2;171:58:1;211:10;203:5;;:18;;;;;;;;;;;;;;;;;;69:360;;;;;;",
   "deployedSourceMap": "69:360:1:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;69:360:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;123:39;;;:::i;:::-;;;;;;;;;;;;;;;;;;;96:20;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;312:114;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;312:114:1;;;;;;;;;;;;;;;;;:::i;:::-;;123:39;;;;:::o;96:20::-;;;;;;;;;;;;;:::o;312:114::-;288:5;;;;;;;;;;;274:19;;:10;:19;;;270:26;;;409:9;382:24;:36;;;;270:26;312:114;:::o",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity >=0.4.21 <0.7.0;\r\n\r\ncontract Migrations {\r\n    address public owner;\r\n    uint256 public last_completed_migration;\r\n\r\n    constructor() public {\r\n        owner = msg.sender;\r\n    }\r\n\r\n    modifier restricted() {\r\n        if (msg.sender == owner) _;\r\n    }\r\n\r\n    function setCompleted(uint256 completed) public restricted {\r\n        last_completed_migration = completed;\r\n    }\r\n}\r\n",
-  "sourcePath": "C:\\Users\\parth\\BlockChain-Based-Land-Registry\\src\\contracts\\Migrations.sol",
+  "sourcePath": "C:\\SPIT\\bct_mini_project\\src\\contracts\\Migrations.sol",
   "ast": {
     "absolutePath": "project:/src/contracts/Migrations.sol",
     "exportedSymbols": {
@@ -964,13 +964,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xB9e037bB9a8A2692838F7A4854257C05932A738e",
-      "transactionHash": "0xb5ff24ac95edb9bff7c3ee9f74f7d48a705cac19ea9cf03dc097100848e9d587"
+      "address": "0x4bb38c3D296167A2Bebcb009Ee7534d7dC947344",
+      "transactionHash": "0xfa499aaeafc748f3ea1a23b2674f6a775f9abb127d76d4d784df1318c2a021b8"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2023-12-02T18:03:49.727Z",
-  "networkType": "ethereum",
+  "updatedAt": "2023-12-03T13:40:40.472Z",
   "devdoc": {
     "methods": {}
   },

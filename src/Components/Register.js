@@ -12,6 +12,7 @@ import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 import Land from '../abis/LandRegistry.json'
 import { withStyles } from '@material-ui/core/styles'
+import { GetCookie } from '../util/GetCookie'
 
 const styles = () => ({
   root: {
@@ -59,8 +60,8 @@ class Register extends Component {
   componentDidMount = async () => {
     const web3 = window.web3
     const accounts = await web3.eth.getAccounts()
-    await window.localStorage.setItem('web3account', accounts[0])
-    this.setState({ account: accounts[0] })
+    // await window.localStorage.setItem('web3account', accounts[0])
+    this.setState({ account:  GetCookie()})
     const networkId = await web3.eth.net.getId()
     const LandData = Land.networks[networkId]
     console.log('web3', LandData)

@@ -19,6 +19,7 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Slide from '@material-ui/core/Slide'
 import axios from 'axios'
+import { GetCookie } from '../util/GetCookie'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />
@@ -90,8 +91,8 @@ class table extends Component {
   componentDidMount = async () => {
     const web3 = window.web3
     const accounts = await web3.eth.getAccounts()
-    await window.localStorage.setItem('web3account', accounts[0])
-    this.setState({ account: accounts[0] })
+    // await window.localStorage.setItem('web3account', accounts[0])
+    this.setState({ account: GetCookie() })
     const networkId = await web3.eth.net.getId()
     const LandData = Land.networks[networkId]
     if (LandData) {
@@ -114,9 +115,9 @@ class table extends Component {
 
   handleAccept = async (id, email) => {
     await this.state.landList.methods.requstToLandOwner(id).send({
-      from: this.state.account,
-      gas: 1000000,
-    })
+		from: GetCookie(),
+		gas: 1000000,
+	});
     let data = {
       lemail: email,
       subject: `${this.state.uname} has requested to buy`,
@@ -141,9 +142,9 @@ class table extends Component {
     let StringValue = mValue.toString()
     console.log('mValue:', StringValue)
     await this.state.landList.methods.buyProperty(id).send({
-      from: this.state.account,
-      value: StringValue,
-    })
+		from: GetCookie(),
+		value: StringValue,
+	});
 
     window.location.reload()
   }
