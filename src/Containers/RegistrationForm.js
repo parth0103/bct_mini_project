@@ -8,7 +8,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Land from "../abis/LandRegistry.json";
 import ipfs from "../ipfs";
 import axios from "axios";
-import { NFTStorage } from "nft.storage";
+// import { NFTStorage } from "nft.storage";
+// import { Web3Storage } from 'web3.storage';
 
 class Register extends Component {
   constructor(props) {
@@ -34,7 +35,7 @@ class Register extends Component {
       buffer: null,
       images: [],
       image: [],
-      hash: ""
+      hash: "",
     };
   }
 
@@ -81,36 +82,45 @@ class Register extends Component {
 
   async Register(data, account, laddress, lamount) {
     // var buf = Buffer.from(JSON.stringify(data));
-    await this.propertyID(laddress, lamount)
-    
-    console.log(this.state.hash,"  ",this.state.propertyId,"  ", account," " , laddress,"  ", lamount)
+    await this.propertyID(laddress, lamount);
+
+    console.log(
+      this.state.hash,
+      "  ",
+      this.state.propertyId,
+      "  ",
+      account,
+      " ",
+      laddress,
+      "  ",
+      lamount
+    );
     await this.state.landList.methods
-        .Registration(
-          account,
-          this.state.hash,
-          laddress,
-          lamount,
-          this.state.propertyId,
-          "Not Approved",
-          "Not yet approved by the govt."
-        )
-        .send({
-          from: this.state.account,
-          gas: 1000000,
-        })
-        .on("receipt", function (receipt) {
-          console.log(receipt);
-          if (!receipt) {
-            console.log("Transaction Failed!!!");
-          } else {
-            console.log("Transaction succesful");
-            window.alert("Transaction succesful");
-            console.log(data);
-            window.location = "/dashboard";
-          }
-        });
-      this.setState({ ipfsHash: this.state.hash });
-  
+      .Registration(
+        account,
+        this.state.hash,
+        laddress,
+        lamount,
+        this.state.propertyId,
+        "Not Approved",
+        "Not yet approved by the govt."
+      )
+      .send({
+        from: this.state.account,
+        gas: 1000000,
+      })
+      .on("receipt", function (receipt) {
+        console.log(receipt);
+        if (!receipt) {
+          console.log("Transaction Failed!!!");
+        } else {
+          console.log("Transaction succesful");
+          window.alert("Transaction succesful");
+          console.log(data);
+          window.location = "/dashboard";
+        }
+      });
+    this.setState({ ipfsHash: this.state.hash });
 
     // console.log(transaction)
   }
@@ -157,19 +167,39 @@ class Register extends Component {
       description: "The metaverse is here. Where is it all being stored?",
     };
 
-    const client = new NFTStorage({
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDZCMGNDRjZkNmIzNTM4NDcxYjA4NWJGYjI1M0IwMWZFRDJhRGEwNTAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2OTQ0NzYzODE3OSwibmFtZSI6IkxhbmQifQ.hByobSDH8H2SJwqiuiNRl6iBS-qlP_0nZkcBeR-wOro",
-    });
-    const metadata = await client.store(nft);
-    let link=metadata.url;
-    this.setState({ hash: link.replace("ipfs://",'') });
-    console.log("NFT data stored!");
-    console.log("Metadata URI: ", this.state.hash);
+    // const client = new NFTStorage({
+    //   token:
+    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDVDOTAxQTNlYTliMmNCMjljZDVFRDZFZmIxOGE1MTgyQTQwNDVjZkEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcwMTU3OTIxMzM3OCwibmFtZSI6IlBhcnRoIn0.tnwRqGfLIE1r4CLQjdkny3q82Wq9yk7FpbYPTqoVPzY",
+    // });
+    // const metadata = await client.store(nft);
+    // let link = metadata.url;
+    // this.setState({ hash: link.replace("ipfs://", "") });
+    // console.log("NFT data stored!");
+    // console.log("Metadata URI: ", this.state.hash);
+    axios.post("http://localhost:8000/api/upload", nft).then((response) => {
+      console.log(response);
+      if (response.status == 200) {
 
-    this.Register(data, account, laddress, lamount)
+        this.setState({ hash: response.data.cid });
+        console.log("Metadata URI: ", this.state.hash);
+        this.Register(data, account, laddress, lamount);
+      }
+    });
+    // this.uploadFileToIPFS(nft);
+    
   }
 
+  // async uploadFileToIPFS (data)  {
+  //   const client = new Web3Storage({
+  //     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDA3MEYwMkM4NjZEOTRCMjFFQjE0YTdiOWRENTcwZjFhQjMxOEZjQUMiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTk3MjM0NjIzNjcsIm5hbWUiOiJuZXVyb3NhZmUifQ.HeNCpTDYnlmGBXmIT06p4-sae19K7MpTz4Mtl0Bm_qE",
+  //   });
+  //   // const Files = await getFilesFromPath(path);
+  //   // console.log(Files);
+  //   const cid = await client.put(data);
+  //   console.log('Content added with CID:', cid);
+  //   return cid;
+  // };
+  
   handleSubmit = () => {
     const account = this.state.account;
     const laddress = this.state.laddress;
@@ -193,12 +223,12 @@ class Register extends Component {
       // document: this.state.buffer,
       // images: this.state.image,
     };
-    console.log(data.name)
+    console.log(data.name);
     if (data) {
+      console.log(data);
       try {
         this.storeExampleNFT();
         // this.Register(data, account, laddress, lamount)
-        
       } catch (error) {
         console.log("error:", error);
       }
@@ -510,6 +540,7 @@ class Register extends Component {
               color="primary"
               endIcon={<SendIcon>submit</SendIcon>}
               disabled
+              onClick={this.handleSubmit}
             >
               Submit
             </Button>

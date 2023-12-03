@@ -87,7 +87,7 @@ class Register extends Component {
   login = async (data) => {
     await this.state.landList.methods
       .addUser(
-        data.address,
+        data.account,
         data.name,
         data.contact,
         data.email,
@@ -108,6 +108,7 @@ class Register extends Component {
   }
 
   handleSubmit = async () => {
+    const web3 = window.web3
     let data = {
       name: this.state.name,
       email: this.state.email,
@@ -115,6 +116,7 @@ class Register extends Component {
       address: this.state.address,
       city: this.state.city,
       postalCode: this.state.postalCode,
+      account:web3.eth.accounts.privateKeyToAccount(this.state.address).address
     }
     this.login(data)
     if (
@@ -125,40 +127,40 @@ class Register extends Component {
       this.state.city &&
       this.state.postalCode
     ) {
-      // if (this.validateEmail(this.state.email)) {
-      //   axios.post('http://localhost:3001/signup', data).then(
-      //     (response) => {
-      //       if (response.status == 200) {
-      //         this.setState({
-      //           name: '',
-      //           email: '',
-      //           address: '',
-      //           postalCode: '',
-      //           city: '',
-      //           contact: '',
-      //         })
-      //       }
+      if (this.validateEmail(this.state.email)) {
+        axios.post('http://localhost:8000/signup', data).then(
+          (response) => {
+            if (response.status == 200) {
+              this.setState({
+                name: '',
+                email: '',
+                address: '',
+                postalCode: '',
+                city: '',
+                contact: '',
+              })
+            }
 
-      //       try {
-      //         this.login(data)
-      //       } catch (error) {
-      //         console.log('error:', error)
-      //       }
-      //     },
-      //     (error) => {
-      //       this.setState({ loading: false })
-      //       alert('User already exist. Try with another email address')
-      //       this.setState({
-      //         name: '',
-      //         email: '',
-      //         address: '',
-      //         postalCode: '',
-      //         city: '',
-      //         contact: '',
-      //       })
-      //     },
-      //   )
-      // } else alert('Please, Enter correct Email address')
+            try {
+              this.login(data)
+            } catch (error) {
+              console.log('error:', error)
+            }
+          },
+          (error) => {
+            this.setState({ loading: false })
+            alert('User already exist. Try with another email address')
+            this.setState({
+              name: '',
+              email: '',
+              address: '',
+              postalCode: '',
+              city: '',
+              contact: '',
+            })
+          },
+        )
+      } else alert('Please, Enter correct Email address')
     } else {
       alert('All fields are required')
     }

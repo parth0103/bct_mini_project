@@ -100,19 +100,28 @@ class Dashboard extends Component {
   };
 
   async propertyDetails(property) {
+    console.log("property", property);
     let details = await this.state.landList.methods
       .landInfoOwner(property)
       .call();
-
-    // console.log("OM", details);
+      console.log("OM", details);
+    console.log("account", this.state.account);
+      if (details[1] === "") {
+        return;
+      }
+    
+    if(details[0]!=this.state.account){
+      return
+    }
     // console.log(`https://nftstorage.link/ipfs/${details[1]}`);
     await axios
-      .get(`https://nftstorage.link/ipfs/${details[1]}`)
+      .get(`https://${details[1]}.ipfs.w3s.link/hello.json`)
       .then((response) => {
         // console.log(response);
         if (response.status == 200) {
+          
           const temp = response.data.data;
-          // console.log("first",temp);
+          console.log("first",temp);
           this.state.assetList.push({
             property: property,
             uniqueID: details[1],
@@ -140,6 +149,7 @@ class Dashboard extends Component {
             images: response.data.image,
           });
           this.setState({ assetList: [...this.state.assetList] });
+          console.log("assetList", this.state.assetList);
         }
       });
   }
@@ -148,50 +158,57 @@ class Dashboard extends Component {
     let details = await this.state.landList.methods
       .landInfoOwner(property)
       .call();
-    console.log("ddddddddd",details," ",this.state.account)
-      await axios
-      .get(`https://nftstorage.link/ipfs/${details[1]}`)
+    if (details[1] === "") {
+      return;
+    }
+    console.log("ddddddddd", details, " ", this.state.account);
+    await axios
+      .get(`https://${details[1]}.ipfs.w3s.link/hello.json`)
       .then((response) => {
-        // console.log(response);
+        console.log(response);
         if (response.status == 200) {
           const temp = response.data.data;
-          
+          console.log(temp);
           if (
             details[0] != this.state.account &&
             (details[5] == this.state.account ||
               details[5] == "0x0000000000000000000000000000000000000000")
-          ){   
-            console.log("first",temp);
-        this.state.assetList1.push({
-          property: property,
-          uniqueID: details[1],
-          name: temp.name,
-          key: details[0],
-          email: temp.email,
-          contact: temp.contact,
-          pan: temp.pan,
-          occupation: temp.occupation,
-          oaddress: temp.laddress,
-          ostate: temp.lstate,
-          ocity: temp.lcity,
-          opostalCode: temp.lpostalCode,
-          laddress: temp.laddress,
-          lstate: temp.lstate,
-          lcity: temp.lcity,
-          lpostalCode: temp.lpostalCode,
-          larea: temp.larea,
-          lamount: details[2],
-          isGovtApproved: details[3],
-          isAvailable: details[4],
-          requester: details[5],
-          requestStatus: details[6],
-          document: response.data.doc,
-          images: response.data.image,
-        });
-        this.setState({ assetList1: [...this.state.assetList1] });
-      
+          ) {
+            console.log("first", temp);
+            // this.state.assetList1.push();
+            const obj = {
+              property: property,
+              uniqueID: details[1],
+              name: temp.name,
+              key: details[0],
+              email: temp.email,
+              contact: temp.contact,
+              pan: temp.pan,
+              occupation: temp.occupation,
+              oaddress: temp.laddress,
+              ostate: temp.lstate,
+              ocity: temp.lcity,
+              opostalCode: temp.lpostalCode,
+              laddress: temp.laddress,
+              lstate: temp.lstate,
+              lcity: temp.lcity,
+              lpostalCode: temp.lpostalCode,
+              larea: temp.larea,
+              lamount: details[2],
+              isGovtApproved: details[3],
+              isAvailable: details[4],
+              requester: details[5],
+              requestStatus: details[6],
+              document: response.data.doc,
+              images: response.data.image,
+            };
+            console.log("obj", obj);
+            this.setState({
+              assetList1: [obj, ...this.state.assetList1],
+            });
           }
         }
+        // console.log("assetList1", assetList1);
       });
   }
 

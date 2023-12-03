@@ -59,22 +59,26 @@ class Login extends Component {
       window.alert('Token contract not deployed to detected network.')
     }
 
+    console.log('account', this.state.account)
     if (window.localStorage.getItem('authenticated') === 'true')
       window.location = '/dashboard'
   }
   handleChange = (name) => (event) => {
+    console.log(event.target.value)
     this.setState({ [name]: event.target.value })
   }
   handleSubmit = async () => {
+    const web3 = window.web3
     let data = {
-      address: this.state.address,
+      account:web3.eth.accounts.privateKeyToAccount(this.state.address).address,
     }
     if (this.state.address) {
       try {
         const user = await this.state.landList.methods
-          .getUser(data.address)
+          .getUser(data.account)
           .call()
 
+          console.log('user', user) 
         if (user) {
           this.setState({
             uid: user[0],
