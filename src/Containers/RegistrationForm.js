@@ -173,43 +173,32 @@ class Register extends Component {
 		console.log(this.state.image);
 
 		// const client = new NFTStorage({
-		//   token:
-		//     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDVDOTAxQTNlYTliMmNCMjljZDVFRDZFZmIxOGE1MTgyQTQwNDVjZkEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcwMTU3OTIxMzM3OCwibmFtZSI6IlBhcnRoIn0.tnwRqGfLIE1r4CLQjdkny3q82Wq9yk7FpbYPTqoVPzY",
+		// 	token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDVDOTAxQTNlYTliMmNCMjljZDVFRDZFZmIxOGE1MTgyQTQwNDVjZkEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcwMTU3OTIxMzM3OCwibmFtZSI6IlBhcnRoIn0.tnwRqGfLIE1r4CLQjdkny3q82Wq9yk7FpbYPTqoVPzY",
 		// });
 		// const metadata = await client.store(nft);
 		// let link = metadata.url;
 		// this.setState({ hash: link.replace("ipfs://", "") });
 		// console.log("NFT data stored!");
-		// console.log("Metadata URI: ", this.state.hash);'
-		const formdata = new FormData();
-		formdata.append("files", [
-			new File([this.state.image], "file", {
-				type: this.state.image.type,
-			}),
-			new File([this.state.doc], "doc"),
-		]);
-		// formdata.append("doc", this.state.doc);
-		formdata.append("nft", nft);
-		console.log(formdata);
-		// axios.post();
-		fetch(
-			"http://localhost:8000/api/upload",
-			{ method: "POST", body: formdata },
-			{
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			}
-		)
-			.then((e) => e.json())
-			.then((response) => {
-				console.log(response);
-				if (response.status == 200) {
-					this.setState({ hash: response.data.cid });
-					console.log("Metadata URI: ", this.state.hash);
-					this.Register(data, account, laddress, lamount);
-				}
-			});
+		// console.log("Metadata URI: ", this.state.hash);
+		// const formdata = new FormData();
+		// formdata.append("files", [
+		// 	new File([this.state.image], "file", {
+		// 		type: this.state.image.type,
+		// 	}),
+		// 	new File([this.state.doc], "doc"),
+		// ]);
+		// // formdata.append("doc", this.state.doc);
+		// formdata.append("nft", nft);
+		// console.log(formdata);
+		// // axios.post();
+		axios.post("http://localhost:8000/api/upload", nft).then((response) => {
+			console.log(response);
+			// if (response.status == 200) {
+			this.setState({ hash: response.data.cid });
+			console.log("Metadata URI: ", this.state.hash);
+			this.Register(data, account, laddress, lamount);
+			// }
+		});
 		// this.uploadFileToIPFS(nft);
 	}
 

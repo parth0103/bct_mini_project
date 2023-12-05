@@ -49,13 +49,14 @@ class Login extends Component {
 	componentDidMount = async () => {
 		const web3 = window.web3;
 		const accounts = await web3.eth.getAccounts();
-		// console.log(accounts)
-		this.setState({ account: GetCookie() });
+		// console.log(GetCookie());
+		// this.setState({ account: GetCookie() });
 		const networkId = await web3.eth.net.getId();
 		const LandData = Land.networks[networkId];
 		if (LandData) {
 			const landList = new web3.eth.Contract(Land.abi, LandData.address);
 			this.setState({ landList });
+			console.log(landList);
 		} else {
 			window.alert("Token contract not deployed to detected network.");
 		}

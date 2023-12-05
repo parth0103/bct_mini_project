@@ -333,8 +333,12 @@ class table extends Component {
 														</span>
 													) : column.id ==
 													  "document" ? (
-														<a href={""} download>
-															Download Document
+														<a
+															href={
+																"/assets/bafybeihwpplmnfsp557wrrho7p7i7qskutoor7rqugfcyz2l3erfq2347y"
+															}
+														>
+															View Document
 														</a>
 													) : column.id ==
 													  "images" ? (
@@ -466,7 +470,7 @@ class table extends Component {
 																{/* {this.state.images.map((image) => ( */}
 																{/* {console.log("dddDD",this.state.images)} */}
 																<img
-																	src=""
+																	src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaOxvK8US-T8n_G-10KLM0SXcDTi9LIBNjYzuN2y5Sjpr0TAY5osehVwVYzpTdHHBkxzQ&usqp=CAU"
 																	style={{
 																		height: "300px",
 																		width: "400px",

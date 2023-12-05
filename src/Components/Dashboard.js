@@ -79,7 +79,13 @@ class Dashboard extends Component {
 		const web3 = window.web3;
 		const accounts = await web3.eth.getAccounts();
 		// await window.localStorage.setItem("web3account", accounts[0]);
-		const web3Account = GetCookie();
+		var web3Account;
+		try {
+			web3Account = GetCookie();
+		} catch (err) {
+			console.log(err);
+		}
+		console.log("cookie,", web3Account);
 		this.setState({ account: web3Account });
 		const networkId = await web3.eth.net.getId();
 		const LandData = Land.networks[networkId];

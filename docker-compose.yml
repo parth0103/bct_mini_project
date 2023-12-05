@@ -1,0 +1,26 @@
+version: "3"
+services:
+  ganache:
+    image: bct/land-registry-ganache:1.0.0
+    build:
+      context: .
+      dockerfile: dockerfile.ganache
+    ports:
+      - "8545:8545"
+  dapp:
+    image: bct/land-registry-server:1.0.0
+    build: ./Server
+    ports:
+      - "8000:8000"
+    depends_on:
+      - ganache
+
+  react:
+    image: bct/land-registry-react:1.0.0
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - dapp
+    stdin_open: true 
+    tty: true

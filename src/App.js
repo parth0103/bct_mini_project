@@ -8,6 +8,7 @@ import {
 	withRouter,
 	Redirect,
 } from "react-router-dom";
+import Deploy from "./Components/Deploy";
 import Register from "./Components/Register";
 import Login from "./Components/Login";
 import Dashboard from "./Components/Dashboard";
@@ -18,6 +19,7 @@ import Dashboard_Govt from "./Components/Dashboard_Govt";
 import Profile from "./Components/Profile";
 import Help from "./Components/Help";
 import Home from "./Components/Home";
+import AssetViewer from "./Components/AssetViewer";
 
 class App extends Component {
 	constructor(props) {
@@ -68,6 +70,12 @@ class App extends Component {
 						<Route exact path="/signup" component={Register} />
 						<Route exact path="/login" component={Login} />
 						<Route exact path="/dashboard" component={Dashboard} />
+						<Route exact path="/deploy" component={Deploy} />
+						<Route
+							exact
+							path="/assets/:id"
+							component={AssetViewer}
+						/>
 						<Route
 							exact
 							path="/govt_login"

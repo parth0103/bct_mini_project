@@ -6,7 +6,7 @@ import ipfs from "../ipfs";
 import Table from "../Containers/Govt_Table";
 import { withStyles } from "@material-ui/core/styles";
 import Web3 from "web3";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
 const styles = (theme) => ({

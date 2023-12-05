@@ -7,7 +7,7 @@ import SendIcon from "@material-ui/icons/Send";
 import axios from "axios";
 import { withRouter, Redirect } from "react-router-dom";
 import Land from "../abis/LandRegistry.json";
-import profile from "../images/avatar.png";
+import profile from "../assets/avatar.png";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import MailIcon from "@material-ui/icons/Mail";
 import PhoneIcon from "@material-ui/icons/Phone";

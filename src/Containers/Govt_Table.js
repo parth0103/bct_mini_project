@@ -243,8 +243,11 @@ class table extends Component {
 														</Grid>
 													) : column.id ==
 													  "document" ? (
-														<a href="" download>
-															Download Document
+														<a
+															href="/assets/bafybeihwpplmnfsp557wrrho7p7i7qskutoor7rqugfcyz2l3erfq2347y"
+															download
+														>
+															View Document
 														</a>
 													) : column.id ==
 													  "images" ? (
@@ -288,7 +291,7 @@ class table extends Component {
 														<DialogContent>
 															<DialogContentText id="alert-dialog-slide-description">
 																<img
-																	src=""
+																	src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaOxvK8US-T8n_G-10KLM0SXcDTi9LIBNjYzuN2y5Sjpr0TAY5osehVwVYzpTdHHBkxzQ&usqp=CAU"
 																	style={{
 																		height: "300px",
 																		width: "400px",
